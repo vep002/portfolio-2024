@@ -9,7 +9,7 @@ import { headerData } from '../../data/headerData';
 import { ThemeContext } from '../../contexts/ThemeContext';
 
 function NavBar() {
-    const { theme, setHandleDrawer } =useContext(ThemeContext);
+    const setHandleDrawer = useContext(ThemeContext);
 
     const [open, setOpen] = useState(false);
 

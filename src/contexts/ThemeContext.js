@@ -3,6 +3,7 @@ import React, { createContext, useState } from 'react';
 export const ThemeContext = createContext();
 
 function ThemeContextProvider(props) {
+    // eslint-disable-next-line
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     const setHandleDrawer = () => {
