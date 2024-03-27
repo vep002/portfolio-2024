@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from 'react';
+import { ThemeContext } from '../../contexts/ThemeContext';
 import { headerData } from "../../data/headerData";
 
+import './Footer.css'
 
 function Footer() {
 
@@ -12,11 +14,13 @@ function Footer() {
     }
   }
 
+  const { theme } = useContext(ThemeContext);
+
   return (
-    <div className="footer">
-      <p>
+    <div className="footer" style={{backgroundColor: theme.secondary}}>
+      <p style={{color: theme.tertiary}}>
         Made with 
-        <span role="img" aria-label="love">
+        <span style={{color: theme.primary, margin: '0 0.5rem -1rem 0.5rem'}}>
           ❤️
         </span>
           by {shortName(headerData.name)}
