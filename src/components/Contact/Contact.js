@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import axios from 'axios';
 import isEmail from 'validator/lib/isEmail';
+import { styled } from '@mui/material/styles';
 import { 
   FaTwitter,
   FaLinkedIn,
@@ -16,8 +17,11 @@ import { AiOutlineSend, AiOutlineCheckCircle } from 'react-icons/ai';
 import { FiPhone, FiAtSign } from 'react-icons/fi';
 import { HiOutlineLocationMarker } from "react-icons/hi";
 
+import { ThemeContext } from "../../contexts/ThemeContext";
+
 import { socialData } from "../../data/socialData";
 import { contactData } from "../../data/contactData";
+import './Contact.css';
 
 function Contact() {
 const [open, setOpen] = useState(false);
@@ -27,6 +31,8 @@ const [message, setMessage] = useState('');
 const [success, setSuccess] = useState(false);
 const [errorMsg, setErrorMsg] = useState('');
 
+const { theme } = useContext(ThemeContext);
+
 const handleClose = (event, reason) => {
   if (reason === 'clickaway') {
     return;
@@ -34,6 +40,88 @@ const handleClose = (event, reason) => {
 
   setOpen(false);
 };
+
+const useStyles = styled((t) => ({
+  input: {
+    border: `4px solid ${theme.primary80}`,
+    backgroundColor: `${theme.secondary}`,
+    color: `${theme.tertiary}`,
+    fontFamily: 'var(--primaryFont)',
+    fontWeight: 500,
+    transition: 'border 0.2s ease-in-out',
+    '&:focus': {
+        border: `4px solid ${theme.primary600}`,
+    },
+  },
+  message: {
+    border: `4px solid ${theme.primary80}`,
+    backgroundColor: `${theme.secondary}`,
+    color: `${theme.tertiary}`,
+    fontFamily: 'var(--primaryFont)',
+    fontWeight: 500,
+    transition: 'border 0.2s ease-in-out',
+    '&:focus': {
+        border: `4px solid ${theme.primary600}`,
+    },
+  },
+  label: {
+    backgroundColor: `${theme.secondary}`,
+    color: `${theme.primary}`,
+    fontFamily: 'var(--primaryFont)',
+    fontWeight: 600,
+    fontSize: '0.9rem',
+    padding: '0 5px',
+    transform: 'translate(25px,50%)',
+    display: 'inline-flex',
+  },
+  socialIcon: {
+    width: '45px',
+    height: '45px',
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '21px',
+    backgroundColor: theme.primary,
+    color: theme.secondary,
+    transition: '250ms ease-in-out',
+    '&:hover': {
+        transform: 'scale(1.1)',
+        color: theme.secondary,
+        backgroundColor: theme.tertiary,
+    },
+  },
+  detailsIcon: {
+    backgroundColor: theme.primary,
+    color: theme.secondary,
+    borderRadius: '50%',
+    width: '45px',
+    height: '45px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '23px',
+    transition: '250ms ease-in-out',
+    flexShrink: 0,
+    '&:hover': {
+        transform: 'scale(1.1)',
+        color: theme.secondary,
+        backgroundColor: theme.tertiary,
+    },
+  },
+  submitBtn: {
+    backgroundColor: theme.primary,
+    color: theme.secondary,
+    transition: '250ms ease-in-out',
+    '&:hover': {
+        transform: 'scale(1.08)',
+        color: theme.secondary,
+        backgroundColor: theme.tertiary,
+    },
+  },
+}));
+
+const classes = useStyles();
 
 const handleContactForm = (e) => {
   e.preventDefault();
@@ -66,38 +154,76 @@ const handleContactForm = (e) => {
 };
 
   return (
-    <div className='contact' id='contact'>
-      <div className='contact--container'>
-        <h1>Contact Me</h1>
-        <div className='contact-body'>
-          <div className="contact--form">
+    <div 
+      className='contacts'
+      id='contact'
+      style={{ backgroundColor: theme.secondary }}
+    >
+      <div className='contacts--container'>
+        <h1 style= {{ color: theme.primary }}>Contact Me</h1>
+        <div className='contacts-body'>
+          <div className="contacts-form">
             <form onSubmit={handleContactForm}>
-              <div className='input--container'>
-                <label htmlFor='Name' className='input-label-name'>Name</label>
+              <div className='input-container'>
+                <label htmlFor='Name' className={classes.label}>Name
+                </label>
                 <input
                   placeholder='Enter your name'
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   type='text'
                   name='Name'
+                  className={`form-input ${classes.input}`}
                   />
               </div>
-              <div className='input--container'>
-                <label htmlFor='Message'>Message</label>
+              <div className='input-container'>
+                <label
+                    htmlFor='Email'
+                    className={classes.label}
+                >
+                    Email
+                </label>
+                <input
+                    placeholder='sample@email.com'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    type='email'
+                    name='Email'
+                    className={`form-input ${classes.input}`}
+                />
+              </div>
+              <div className='input-container'>
+                <label htmlFor='Message' className={classes.label}>Message
+                </label>
                 <textarea
                   placeholder='Enter your message'
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   type='text'
                   name='Message'
+                  className={`form-message ${classes.message}`}
                   />
               </div>
-              <div className='submit-button'>
-                <button type='submit'>
+              <div className='submit-btn'>
+                <button type='submit' className={classes.submitBtn}>
                   <p>{!success ? 'Send' : 'Sent'}</p>
                   <div className='submit-icon'>
-                    <AiOutlineSend className='send-icon' />
-                    <AiOutlineCheckCircle className='sent-icon' />
+                    <AiOutlineSend 
+                      className='send-icon'
+                      style={{
+                        animation: !success ? 'initial' : 'fly 0.8s linear both',
+                        position: success ? 'absolute' : 'initial'
+                      }}
+                    />
+                    <AiOutlineCheckCircle 
+                      className='sent-icon'
+                      style={{
+                        display: !success
+                            ? 'none'
+                            : 'inline-flex',
+                        opacity: !success ? '0' : '1',
+                      }}
+                    />
                   </div>
                 </button>
               </div>
@@ -124,28 +250,46 @@ const handleContactForm = (e) => {
                     </IconButton>
                   </React.Fragment>
                 }
+              style={{
+                backgroundColor: theme.primary,
+                color: theme.secondary,
+                fontFamily: 'var(--primaryFont)',
+              }}
+              message={errorMsg}  
               />
             </Snackbar>
           </div>
 
-          <div className='contact--info'>
+          <div className='contacts-details'>
             <a 
               href={`mailo:${contactData.email}`}
-              className='personal details'
+              className='personal-details'
               >
-                <FiAtSign />
-                <p>{contactData.email}</p>
+               <div className={classes.detailsIcon}>
+                  <FiAtSign/>
+                </div>
+                <p style={{ color: theme.tertiary }}>
+                    {contactData.email}
+                </p>
               </a>
               <a 
                 href={`tel:${contactData.phone}`}
                 className='personal-details'
                 >
-                  <FiPhone />
-                  <p>{contactData.phone}</p>
+                  <div className={classes.detailsIcon}>
+                    <FiPhone />
+                  </div>
+                  <p style={{ color: theme.tertiary }}>
+                    {contactData.phone}
+                  </p>
                 </a>
                 <div className='personal-details'>
-                  <HiOutlineLocationMarker />
-                  <p>{contactData.address}</p>
+                  <div className={classes.detailsIcon}>
+                    <HiOutlineLocationMarker />
+                  </div>
+                  <p style={{ color: theme.tertiary}}>
+                    {contactData.address}
+                  </p>
                 </div>
                 <div className='personal-details'>
                   {socialData.github && (
@@ -153,15 +297,23 @@ const handleContactForm = (e) => {
                       href={socialData.github}
                       target='_blank'
                       rel='noreferrer'
+                      className={classes.socialIcon}
                     >
                         <FaGithub aria-label='GitHub'/>
                     </a>
                   )}
-                  <p>Check out my GzitHub</p>
+                  <p style={{ color: theme.tertiary }}>
+                    Check out my GitHub
+                  </p>
                 </div>
               </div>
         </div>
       </div>
+      <img
+        src={theme.contactsimg}
+        alt='contacts'
+        className='contacts--img'
+      />
     </div>
   );
 }

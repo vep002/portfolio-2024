@@ -1,7 +1,9 @@
 import React, { useContext } from "react";
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 
+import './Landing.css';
 import { ThemeContext } from '../../contexts/ThemeContext';
 import { headerData } from '../../data/headerData';
 import { socialData } from '../../data/socialData';
@@ -12,7 +14,7 @@ import {
 } from 'react-icons/fa';
 
 function Landing() {
-  // const { theme, drawerOpen } = useContext(ThemeContext);
+  const { theme, drawerOpen } = useContext(ThemeContext);
 
   return (
     <div className='landing'>
@@ -46,6 +48,15 @@ function Landing() {
           )}
         </div>
       </div>
+      <img
+        src={headerData.image}
+        alt=''
+        className='landing--img'
+        style={{
+            opacity: `${drawerOpen ? '0' : '1'}`,
+            borderColor: theme.secondary,
+        }}
+      />
       <div 
         className='landing--container-right'
         >
